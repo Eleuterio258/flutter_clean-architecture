@@ -1,3 +1,5 @@
+import 'package:crud_ca_bloc/features/posts/data/datasources/post_remote_firebase.dart';
+
 import 'core/network/network_info.dart';
 import 'features/posts/data/datasources/post_local_data_source.dart';
 import 'features/posts/data/datasources/post_remote_data_source.dart';
@@ -35,7 +37,10 @@ Future<void> init() async {
 // Repository
 
   sl.registerLazySingleton<PostsRepository>(() => PostsRepositoryImpl(
-      remoteDataSource: sl(), localDataSource: sl(), networkInfo: sl()));
+      remoteDataSource: sl(),
+      localDataSource: sl(),
+      networkInfo: sl(),
+      remoteFirebase: sl()));
 
 // Datasources
 
@@ -44,12 +49,12 @@ Future<void> init() async {
   sl.registerLazySingleton<PostLocalDataSource>(
       () => PostLocalDataSourceImpl(sharedPreferences: sl()));
 
+  sl.registerLazySingleton<IPostRemoteFirebase>(() => PostRemoteFirebaseImp());
 //! Core
 
   sl.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl(sl()));
 
 //! External
-
 
   final sharedPreferences = await SharedPreferences.getInstance();
   sl.registerLazySingleton(() => sharedPreferences);

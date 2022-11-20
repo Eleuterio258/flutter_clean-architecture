@@ -18,10 +18,7 @@ class UpdatePostBtnWidget extends StatelessWidget {
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (_) => PostAddUpdatePage(
-                isUpdatePost: true,
-                post: post,
-              ),
+              builder: (_) => PostAddUpdatePage(isUpdatePost: true, post: post),
             ));
       },
       icon: Icon(Icons.edit),

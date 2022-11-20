@@ -18,6 +18,8 @@ class PostLocalDataSourceImpl implements PostLocalDataSource {
 
   PostLocalDataSourceImpl({required this.sharedPreferences});
   @override
+
+  //FUNCTION TO GET DATA FROM SHARED PREFERENCES
   Future<Unit> cachePosts(List<PostModel> postModels) {
     List postModelsToJson = postModels
         .map<Map<String, dynamic>>((postModel) => postModel.toJson())
@@ -27,6 +29,8 @@ class PostLocalDataSourceImpl implements PostLocalDataSource {
   }
 
   @override
+
+  // FUNCTIONS TO GET CACHED POSTS FROM SHARED PREFERENCES
   Future<List<PostModel>> getCachedPosts() {
     final jsonString = sharedPreferences.getString(CACHED_POSTS);
     if (jsonString != null) {

@@ -1,3 +1,4 @@
+import 'package:crud_ca_bloc/features/posts/data/datasources/post_remote_firebase.dart';
 import 'package:dartz/dartz.dart';
 
 import '../../../../core/error/exceptions.dart';
@@ -14,11 +15,13 @@ typedef Future<Unit> DeleteOrUpdateOrAddPost();
 class PostsRepositoryImpl implements PostsRepository {
   final PostRemoteDataSource remoteDataSource;
   final PostLocalDataSource localDataSource;
+  final IPostRemoteFirebase remoteFirebase;
   final NetworkInfo networkInfo;
 
   PostsRepositoryImpl(
       {required this.remoteDataSource,
       required this.localDataSource,
+      required this.remoteFirebase,
       required this.networkInfo});
   @override
   Future<Either<Failure, List<Post>>> getAllPosts() async {
@@ -26,7 +29,10 @@ class PostsRepositoryImpl implements PostsRepository {
       try {
         final remotePosts = await remoteDataSource.getAllPosts();
         localDataSource.cachePosts(remotePosts);
-        return Right(remotePosts);
+        remoteFirebase.addPost(remotePosts);
+        final remotePostsFirebase = await remoteFirebase.getAllPosts();
+        //  return Right(remotePosts);
+        return Right(remotePostsFirebase);
       } on ServerException {
         return Left(ServerFailure());
       }

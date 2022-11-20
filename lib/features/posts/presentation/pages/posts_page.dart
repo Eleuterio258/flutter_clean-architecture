@@ -31,6 +31,7 @@ class PostsPage extends StatelessWidget {
           } else if (state is LoadedPostsState) {
             return RefreshIndicator(
                 onRefresh: () => _onRefresh(context),
+                
                 child: PostListWidget(posts: state.posts));
           } else if (state is ErrorPostsState) {
             return MessageDisplayWidget(message: state.message);
@@ -51,9 +52,7 @@ class PostsPage extends StatelessWidget {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (_) => PostAddUpdatePage(
-                      isUpdatePost: false,
-                    )));
+                builder: (_) => PostAddUpdatePage(isUpdatePost: false)));
       },
       child: Icon(Icons.add),
     );
